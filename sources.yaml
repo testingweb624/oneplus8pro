@@ -1,0 +1,67 @@
+LineageOS-21:
+  #kernel:
+   # - git clone https://github.com/LineageOS/android_kernel_oneplus_sm8250 --single-branch -b lineage-21 
+  clang:
+     - git clone --depth=1 https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-android-4.9.git -b main clang
+    #- curl https://kali.download/nethunter-images/toolchains/google_clang-10.0.4.tar.xz -RLO && tar -C clang/ -xf clang-*.tar.xz
+    #- wget https://kali.download/nethunter-images/toolchains/linaro-aarch64-4.9.tar.xz && tar -C aarch64/ -xf google_aarch64-4.9.tar.xz
+  config:
+    - export SUBARCH=arm64
+    - CC=clang
+    - export CLANG_ROOT=${PWD}/clang/
+    - export CLANG_PATH=${CLANG_ROOT}/bin
+    - export PATH=${CLANG_PATH}:${PATH}
+    - export LD_LIBRARY_PATH=${CLANG_ROOT}/lib64:$LD_LIBRARY_PATH
+    - export CLANG_TRIPLE="aarch64-linux-gnu-"
+    #- export CCD64="/aarch64/aarch64-linaro-4.9"
+    #- export CROSS_COMPILE=${CCD64}/bin/aarch64-linux-gnu-
+    - export ARCH=arm64
+    #- make mrproper
+    - echo "printing working directory -------"
+    - pwd
+    - echo "adding patches wifi injec."
+    - patch -d /home/runner/work/oneplus8pro/oneplus8pro -p1 < add-wifi-injection-4.14.patch
+    - cat /home/runner/work/oneplus8pro/oneplus8pro/net/mac80211/tx.c.rej
+    - echo "adding patches fix-ath9k-naming-conflict.patch"
+    - patch -d /home/runner/work/oneplus8pro/oneplus8pro -p1 < fix-ath9k-naming-conflict.patch
+    - echo "adding patches add-rtl88xxau-5.6.4.2-drivers.patch"
+    - patch -d /home/runner/work/oneplus8pro/oneplus8pro -p1 < add-rtl88xxau-5.6.4.2-drivers.patch
+    - echo "adding patches fix-yylloc.dtc-lexer.lex.c_shipped.patch"
+    - patch -d /home/runner/work/oneplus8pro/oneplus8pro -p1 < fix-yylloc.dtc-lexer.lex.c_shipped.patch
+    - echo "adding patches ended .."
+    - echo "Building kernel now...."
+    - make O=out ARCH=arm64 op_defconfig
+  build:
+   # - ARCH=arm64 CC=clang CROSS_COMPILE="${PWD}/clang/bin/aarch64-linux-gnu-" CROSS_COMPILE_COMPAT="${PWD}/clang/bin/arm-linux-gnueabi" CROSS_COMPILE_ARM32="${PWD}/clang/bin/arm-linux-gnueabi-" CLANG_TRIPLE=aarch64-linux-gnu- make -j$(nproc --all) LLVM=1 LLVM_IAS=1 LD=ld.lld AR=llvm-ar NM=llvm-nm AS=llvm-as OBJCOPY=llvm-objcopy OBJDUMP=llvm-objdump STRIP=llvm-strip O=out
+     - ARCH=arm64 CC=clang CROSS_COMPILE="${PWD}/clang/bin/aarch64-linux-gnu-" CLANG_TRIPLE=aarch64-linux-gnu- make -j$(nproc --all) CONFIG_SECTION_MISMATCH_WARN_ONLY=y LLVM=1 LLVM_IAS=1 LD=ld.lld AR=llvm-ar NM=llvm-nm AS=llvm-as OBJCOPY=llvm-objcopy OBJDUMP=llvm-objdump STRIP=llvm-strip O=out
+  target:
+    - out/arch/arm64/boot/Image
+  anykernel:
+    - nashc
+  kernelSU:
+    - stable-pin
+    
+Clean:
+  out:
+    - rm -rf out
+  kernel:
+    - make mrproper
+  custom:
+    - git status
+
+# Stable-pin version of KernelSU is used by KernelSU.sh to replace placeholder (kernelsu-version) with the newest stable version from ksu_version.txt
+KernelSU:
+  version:
+    stable-pin:
+      - curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -s v1.0.2
+    stable:
+      - curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -
+    unstable:
+      - curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -s main
+
+AnyKernel3:
+  version:
+    nashc:
+      - git clone https://github.com/testingweb624/AnyKernel3.git -b master
+    test:
+      - echo "Test Success!"
