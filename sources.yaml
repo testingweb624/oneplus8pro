@@ -20,6 +20,7 @@ LineageOS-22:
     - echo "printing working directory -------"
     - pwd
     - echo "adding patches wifi injec."
+    - patch -d /home/runner/work/oneplus8pro/oneplus8pro -p1 < enable_monitor_mode.patch
     - patch -d /home/runner/work/oneplus8pro/oneplus8pro -p1 < add-wifi-injection-4.14.patch
     - cat /home/runner/work/oneplus8pro/oneplus8pro/net/mac80211/tx.c.rej
     - echo "adding patches fix-ath9k-naming-conflict.patch"
