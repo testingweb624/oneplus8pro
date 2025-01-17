@@ -27,11 +27,7 @@ jobs:
       - name: Install build dependencies
         run: |
           sudo apt update
-          sudo apt -y upgrade 
-          wget http://ftp.us.debian.org/debian/pool/main/n/ncurses/libtinfo5_6.4-4_amd64.deb && sudo dpkg -i libtinfo5_6.4-4_amd64.deb && rm -f libtinfo5_6.4-4_amd64.deb
-          wget http://ftp.us.debian.org/debian/pool/main/n/ncurses/libncurses5_6.4-4_amd64.deb && sudo dpkg -i libncurses5_6.4-4_amd64.deb && rm -f libncurses5_6.4-4_amd64.deb
-          sudo apt install -y lib32c-dev python3-pip jq libarchive-tools zip lib32z-dev libghc-bzlib-dev pngcrush ^liblzma.* python-is-python3 libsdl1.2-dev autoconf libxml2-utils wget pkg-config unzip w3m gawk imagemagick libc6-dev gcc-multilib patchelf gzip clang subversion optipng device-tree-compiler ccache gcc ^liblz4-.* lzip rsync automake fastboot patch zip pngquant expat lzop libswitch-perl make libcap-dev adb libxml2 bison libxml-simple-perl zlib1g-dev libarchive-tools libtool squashfs-tools gperf ^lzma.* libfl-dev ncurses-dev pwgen flex libtinfo5 minicom liblz4-tool libmpfr-dev libssl-dev lib32ncurses5-dev libbz2-dev lib32z1-dev libgmp-dev git libncurses5-dev dpkg-dev libmpc-dev lftp python3 rar git-lfs policycoreutils unrar libncurses5 libbz2-1.0 ncftp tree python3-dev bzip2 bc ftp software-properties-common tar libgl1-mesa-dev texinfo schedtool curl libexpat1-dev llvm libc6-dev-i386 apt-utils cmake g++-multilib build-essential re2c axel maven xsltproc g++ libx11-dev libxml-sax-base-perl gnupg bash
-          sudo pip3 install yq
+          sudo apt install default-jdk git gnupg flex bison gperf build-essential zip curl libc6-dev libncurses-dev libx11-dev libreadline-dev libgl1 libgl1-mesa-dev python3 make sudo gcc g++ bc grep tofrodos python3-markdown libxml2-utils xsltproc zlib1g-dev python-is-python3 libc6-dev libtinfo6 make repo cpio kmod openssl libelf-dev pahole libssl-dev -y
           
       - name: Set up ccache
         run: |
