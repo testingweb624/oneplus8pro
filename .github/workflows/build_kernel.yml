@@ -1,0 +1,148 @@
+name: KernelSU Builder
+
+on:
+  push:
+  workflow_dispatch:
+  repository_dispatch:
+    types: [trigger-KernelSU-build]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        version: ["LineageOS-23.2"]
+
+    env:
+      VERSION: ${{ matrix.version }}
+      ARCH: arm64
+      KBUILD_BUILD_HOST: Github-Action
+      KBUILD_BUILD_USER: "KernelSU_Builder"
+      CLANG_PATH: ${{ github.workspace }}/clang/bin
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install build dependencies
+        run: |
+          sudo apt update
+          sudo apt install default-jdk git gnupg flex bison gperf llvm build-essential zip curl libc6-dev libncurses-dev libx11-dev libreadline-dev libgl1 libgl1-mesa-dev python3 make sudo gcc g++ bc grep tofrodos python3-markdown libxml2-utils xsltproc zlib1g-dev python-is-python3 libc6-dev libtinfo6 make repo cpio kmod openssl libelf-dev pahole libssl-dev -y
+          
+      - name: Set up ccache
+        run: |
+          echo "/usr/lib/ccache" >> $GITHUB_PATH
+          echo "USE_CCACHE=1" >> $GITHUB_ENV
+
+      - name: Cache ccache
+        uses: actions/cache@v3
+        with:
+          path: ~/.ccache
+          key: ${{ runner.os }}-ccache-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-ccache-
+
+      - name: Clone clang and kernel sources
+        run: |
+          chmod +x clone.sh
+          ./clone.sh
+
+      - name: Add Clang to PATH
+        run: |
+          echo "${CLANG_PATH}" >> $GITHUB_PATH
+        
+      - name: Compile kernel
+        run: |
+          chmod +x build.sh
+          ./build.sh
+
+      - name: Make output directory for kernel
+        run: |
+          mkdir outw
+          mkdir outw/false
+          mkdir outw/true
+
+      - name: Move kernel without KernelSU support to output directory
+        run: |
+          chmod +x move.sh
+          ./move.sh
+
+      - name: Clean build environment
+        run: |
+          chmod +x clean.sh
+          ./clean.sh
+
+      - name: Set KERNELSU environment variable to true
+        run: echo "KERNELSU=true" >> $GITHUB_ENV
+
+      - name: Set KERNELSU_VERSION environment variable
+        run: echo "KERNELSU_VERSION=$(cat ksu_version.txt)" >> $GITHUB_ENV
+
+      - name: Add KernelSU support to kernel
+        run: |
+          chmod +x kernelSU.sh
+          ./kernelSU.sh
+          echo "Inside kernel su folder-----------"
+          cd KernelSU/
+          git config --global user.email "testingweb624@gmail.com"
+          git config --global user.name "testtest"
+          git config --local -l
+          git revert 898e9d4f8ca9b2f46b0c6b36b80a872b5b88d899
+          git revert fd09ccfc2906ad119f7158f9518810e06a73a919
+         
+
+      - name: Compile kernel with KernelSU support
+        run: |
+          chmod +x build.sh
+          ./build.sh
+
+      - name: Move kernel with KernelSU support to output directory
+        run: |
+          chmod +x move.sh
+          ./move.sh
+
+      - name: Clone AnyKernel3
+        run: |
+          chmod +x anykernel.sh
+          ./anykernel.sh
+
+      - name: Set ZIP_NO_KSU and ZIP_KSU environment variables
+        run: |
+          echo "ZIP_NO_KSU=${{ env.VERSION }}-NoKernelSU.zip" >> $GITHUB_ENV
+          echo "ZIP_KSU=${{ env.VERSION }}-KernelSU-$(cat ksu_version.txt).zip" >> $GITHUB_ENV
+
+      - name: Make AnyKernel3 zip
+        run: |
+          chmod +x makezip.sh
+          ./makezip.sh
+
+      - name: Extract info for release
+        run: |
+          chmod +x extract.sh
+          ./extract.sh
+
+      - name: Make a release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+             ${{ github.workspace }}/${{ env.ZIP_NO_KSU }}
+             ${{ github.workspace }}/${{ env.ZIP_KSU }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          name: KernelSU Release - ${{ env.KERNELSU_VERSION }}
+          tag_name: ${{ github.run_id }}
+          body: |
+             **Info:**
+              - KernelSU Version: ${{ env.KERNELSU_VERSION }}.
+              
+              **Installation:**
+              - Download desired zip file.
+              - Flash the zip file in recovery using sideload or any other method.
+            
+              <details>
+                <summary>Build Settings</summary>
+                  ```
+                  ${{ env.buildsettings }}
+                  ```
+              </details>
+          draft: false
+          prerelease: false
