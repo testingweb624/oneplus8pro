@@ -1,6 +1,6 @@
 LineageOS-22:
   #kernel:
-   # - git clone https://github.com/LineageOS/android_kernel_oneplus_sm8250 --single-branch -b lineage-22.3 
+   # - git clone https://github.com/LineageOS/android_kernel_oneplus_sm8250 --single-branch -b lineage-23.2 
   clang:
      - git clone --depth=1 https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-android-4.9.git -b main clang
     #- curl https://kali.download/nethunter-images/toolchains/google_clang-10.0.4.tar.xz -RLO && tar -C clang/ -xf clang-*.tar.xz
