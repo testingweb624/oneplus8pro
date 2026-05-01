@@ -214,9 +214,9 @@ struct vblank_event {
 static void vblank_ctrl_worker(struct kthread_work *work)
 {
 	struct msm_vblank_ctrl *vbl_ctrl = container_of(work,
-						struct msm_vblank_ctrl, work);
+					struct msm_vblank_ctrl, work);
 	struct msm_drm_private *priv = container_of(vbl_ctrl,
-					struct msm_drm_private, vblank_ctrl);
+				struct msm_drm_private, vblank_ctrl);
 	struct msm_kms *kms = priv->kms;
 	struct vblank_event *vbl_ev, *tmp;
 	unsigned long flags;
@@ -228,10 +228,10 @@ static void vblank_ctrl_worker(struct kthread_work *work)
 
 		if (vbl_ev->enable)
 			kms->funcs->enable_vblank(kms,
-						priv->crtcs[vbl_ev->crtc_id]);
+					priv->crtcs[vbl_ev->crtc_id]);
 		else
 			kms->funcs->disable_vblank(kms,
-						priv->crtcs[vbl_ev->crtc_id]);
+					priv->crtcs[vbl_ev->crtc_id]);
 
 		kfree(vbl_ev);
 
@@ -242,7 +242,7 @@ static void vblank_ctrl_worker(struct kthread_work *work)
 }
 
 static int vblank_ctrl_queue_work(struct msm_drm_private *priv,
-					int crtc_id, bool enable)
+				int crtc_id, bool enable)
 {
 	struct msm_vblank_ctrl *vbl_ctrl = &priv->vblank_ctrl;
 	struct vblank_event *vbl_ev;
@@ -566,10 +566,10 @@ static int msm_drm_init(struct device *dev, struct drm_driver *drv)
 				&priv->disp_thread[i].worker,
 				"crtc_commit:%d", priv->disp_thread[i].crtc_id);
 		ret = sched_setscheduler(priv->disp_thread[i].thread,
-							SCHED_FIFO, &param);
+						SCHED_FIFO, &param);
 		if (ret)
 			pr_warn("display thread priority update failed: %d\n",
-									ret);
+								ret);
 
 		if (IS_ERR(priv->disp_thread[i].thread)) {
 			dev_err(dev, "failed to create crtc_commit kthread\n");
@@ -592,10 +592,10 @@ static int msm_drm_init(struct device *dev, struct drm_driver *drv)
 		 * failure at crtc commit level.
 		 */
 		ret = sched_setscheduler(priv->event_thread[i].thread,
-							SCHED_FIFO, &param);
+						SCHED_FIFO, &param);
 		if (ret)
 			pr_warn("display event thread priority update failed: %d\n",
-									ret);
+								ret);
 
 		if (IS_ERR(priv->event_thread[i].thread)) {
 			dev_err(dev, "failed to create crtc_event kthread\n");
@@ -1233,7 +1233,8 @@ static int add_components_mdp(struct device *mdp_dev,
 
 static int compare_name_mdp(struct device *dev, void *data)
 {
-	return (strnstr(dev_name(dev), "mdp") != NULL);
+	const char *dev_str = dev_name(dev);
+	return (strnstr(dev_str, "mdp", strlen(dev_str)) != NULL);
 }
 
 static int add_display_components(struct device *dev,
@@ -1294,9 +1295,9 @@ static const struct of_device_id msm_gpu_match[] = {
 
 #ifdef CONFIG_QCOM_KGSL
 static int add_gpu_components(struct device *dev,
-					      struct component_match **matchptr)
+				      struct component_match **matchptr)
 {
-		return 0;
+	return 0;
 }
 #else
 static int add_gpu_components(struct device *dev,
