@@ -1,5 +1,8 @@
 name: KernelSU Builder
 
+permissions:
+  contents: write
+  
 on:
   push:
   workflow_dispatch:
