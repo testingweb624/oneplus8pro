@@ -87,11 +87,11 @@ jobs:
           ./kernelSU.sh
           echo "Inside kernel su folder-----------"
           cd KernelSU/
-          **git config --global user.email "testingweb624@gmail.com"
-          **git config --global user.name "testtest"
-          **git config --local -l
-          **git revert 898e9d4f8ca9b2f46b0c6b36b80a872b5b88d899
-          **git revert fd09ccfc2906ad119f7158f9518810e06a73a919
+          # **git config --global user.email "testingweb624@gmail.com"
+          # **git config --global user.name "testtest"
+          # **git config --local -l
+          # **git revert 898e9d4f8ca9b2f46b0c6b36b80a872b5b88d899
+          # **git revert fd09ccfc2906ad119f7158f9518810e06a73a919
          
 
       - name: Compile kernel with KernelSU support
