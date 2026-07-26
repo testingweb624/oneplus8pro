@@ -47,6 +47,8 @@ Clean:
     - rm -rf out
   kernel:
     - make mrproper
+  kernelsu:
+    - rm -rf KernelSU
   custom:
     - git status
 
