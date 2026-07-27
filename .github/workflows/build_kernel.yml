@@ -70,21 +70,21 @@ jobs:
           chmod +x move.sh
           ./move.sh
 
-      - name: Clean build environment
-        run: |
-          chmod +x clean.sh
-          ./clean.sh
-
-      #- name: Set KERNELSU environment variable to true
-      #  run: echo "KERNELSU=true" >> $GITHUB_ENV
-
-      #- name: Set KERNELSU_VERSION environment variable
-      #  run: echo "KERNELSU_VERSION=$(cat ksu_version.txt)" >> $GITHUB_ENV
-
-      #- name: Add KernelSU support to kernel
+      #- name: Clean build environment
       #  run: |
-      #    chmod +x kernelSU.sh
-      #    ./kernelSU.sh
+      #    chmod +x clean.sh
+      #    ./clean.sh
+
+      - name: Set KERNELSU environment variable to true
+        run: echo "KERNELSU=true" >> $GITHUB_ENV
+
+      - name: Set KERNELSU_VERSION environment variable
+        run: echo "KERNELSU_VERSION=$(cat ksu_version.txt)" >> $GITHUB_ENV
+
+      - name: Add KernelSU support to kernel
+        run: |
+          chmod +x kernelSU.sh
+          ./kernelSU.sh
           # echo "Inside kernel su folder-----------"
           # cd KernelSU/
           # **git config --global user.email "testingweb624@gmail.com"
@@ -94,10 +94,10 @@ jobs:
           # **git revert fd09ccfc2906ad119f7158f9518810e06a73a919
          
 
-      #- name: Compile kernel with KernelSU support
-      #  run: |
-      #    chmod +x build.sh
-      #    ./build.sh
+      - name: Compile kernel with KernelSU support
+        run: |
+          chmod +x build.sh
+          ./build.sh
 
       - name: Move kernel with KernelSU support to output directory
         run: |
