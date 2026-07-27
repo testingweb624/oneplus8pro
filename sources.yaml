@@ -44,11 +44,13 @@ LineageOS-23.2:
     
 Clean:
   out:
-    - rm -rf out
+    #- rm -rf out
   kernel:
     - make mrproper
   kernelsu:
-    - rm -rf KernelSU
+    - rm -rf KernelSU-Next
+    - echo "working directory"
+    - pwd
   custom:
     - git status
 
