@@ -233,7 +233,4 @@ source "drivers/gpu/msm/Kconfig"
 
 source "drivers/energy_model/Kconfig"
 
-# Local KernelSU-Next configuration
-source "drivers/kernelsu/Kconfig"
-
 endmenu
