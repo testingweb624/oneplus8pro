@@ -128,9 +128,6 @@ EXPORT_SYMBOL_GPL(vfs_truncate);
 long do_sys_truncate(const char __user *pathname, loff_t length)
 {
 	unsigned int lookup_flags = LOOKUP_FOLLOW;
-#ifdef CONFIG_KSU
-	ksu_handle_faccessat(&dfd, &filename, &mode, NULL);
-#endif
 	struct path path;
 	int error;
 
@@ -453,12 +450,6 @@ out:
 	put_cred(override_cred);
 	return res;
 }
-
-#ifdef CONFIG_KSU
-__attribute__((hot))
-extern int ksu_handle_faccessat(int *dfd, const char __user **filename_user,
-				int *mode, int *flags);
-#endif
 
 SYSCALL_DEFINE3(faccessat, int, dfd, const char __user *, filename, int, mode)
 {
