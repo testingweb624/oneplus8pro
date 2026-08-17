@@ -48,7 +48,7 @@ Clean:
   kernel:
     - make mrproper
   kernelsu:
-    - rm -rf ReSukiSU
+    - rm -rf KernelSU
     - echo "working directory"
     - pwd
   custom:
@@ -58,10 +58,13 @@ Clean:
 KernelSU:
   version:
     stable-pin:
+      - curl -L "https://raw.githubusercontent.com/testingweb624/KernelSU-Next/refs/heads/dev/kernelsu-next-nongki-5files.patch" | git apply
       - curl -LSs "https://raw.githubusercontent.com/testingweb624/KernelSU-Next/refs/heads/legacy/kernel/setup.sh" | bash -s legacy
     stable:
+      - curl -L "https://raw.githubusercontent.com/testingweb624/KernelSU-Next/refs/heads/dev/kernelsu-next-nongki-5files.patch" | git apply
       - curl -LSs "https://raw.githubusercontent.com/testingweb624/KernelSU-Next/refs/heads/legacy/kernel/setup.sh" | bash -s legacy
     unstable:
+      - curl -L "https://raw.githubusercontent.com/testingweb624/KernelSU-Next/refs/heads/dev/kernelsu-next-nongki-5files.patch" | git apply
       - curl -LSs "https://raw.githubusercontent.com/testingweb624/KernelSU-Next/refs/heads/legacy/kernel/setup.sh" | bash -s legacy
 
 AnyKernel3:
