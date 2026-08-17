@@ -48,7 +48,7 @@ Clean:
   kernel:
     - make mrproper
   kernelsu:
-    - rm -rf KernelSU-Next
+    - rm -rf ReSukiSU
     - echo "working directory"
     - pwd
   custom:
@@ -58,11 +58,11 @@ Clean:
 KernelSU:
   version:
     stable-pin:
-      - curl -LSs "https://raw.githubusercontent.com/KernelSU-Next/KernelSU-Next/next/kernel/setup.sh" | bash -s legacy
+      - curl -LSs "https://raw.githubusercontent.com/ReSukiSU/ReSukiSU/main/kernel/setup.sh" | bash
     stable:
-      - curl -LSs "https://raw.githubusercontent.com/KernelSU-Next/KernelSU-Next/next/kernel/setup.sh" | bash -s legacy
+      - curl -LSs "https://raw.githubusercontent.com/ReSukiSU/ReSukiSU/main/kernel/setup.sh" | bash
     unstable:
-      - curl -LSs "https://raw.githubusercontent.com/KernelSU-Next/KernelSU-Next/next/kernel/setup.sh" | bash -s legacy
+      - curl -LSs "https://raw.githubusercontent.com/ReSukiSU/ReSukiSU/main/kernel/setup.sh" | bash
 
 AnyKernel3:
   version:
