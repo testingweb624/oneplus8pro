@@ -1,4 +1,12 @@
 # CONFIG_LOCALVERSION_AUTO is not set
+#kernelsu-next
+CONFIG_KSU=y
+CONFIG_KSU_KPROBE_HOOKS=n
+
+# KPROBES can remain enabled if something else in your kernel needs them
+CONFIG_KPROBES=y
+CONFIG_KPROBE_EVENTS=y
+
 CONFIG_NO_HZ=y
 CONFIG_HIGH_RES_TIMERS=y
 CONFIG_PREEMPT=y
