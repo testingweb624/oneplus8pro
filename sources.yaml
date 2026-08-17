@@ -58,11 +58,11 @@ Clean:
 KernelSU:
   version:
     stable-pin:
-      - curl -LSs "https://raw.githubusercontent.com/ReSukiSU/ReSukiSU/main/kernel/setup.sh" | bash
+      - curl -LSs "https://raw.githubusercontent.com/testingweb624/KernelSU-Next/refs/heads/legacy/kernel/setup.sh" | bash -s legacy
     stable:
-      - curl -LSs "https://raw.githubusercontent.com/ReSukiSU/ReSukiSU/main/kernel/setup.sh" | bash
+      - curl -LSs "https://raw.githubusercontent.com/testingweb624/KernelSU-Next/refs/heads/legacy/kernel/setup.sh" | bash -s legacy
     unstable:
-      - curl -LSs "https://raw.githubusercontent.com/ReSukiSU/ReSukiSU/main/kernel/setup.sh" | bash
+      - curl -LSs "https://raw.githubusercontent.com/testingweb624/KernelSU-Next/refs/heads/legacy/kernel/setup.sh" | bash -s legacy
 
 AnyKernel3:
   version:
