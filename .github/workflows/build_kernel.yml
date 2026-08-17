@@ -131,7 +131,7 @@ jobs:
              ${{ github.workspace }}/${{ env.ZIP_NO_KSU }}
              ${{ github.workspace }}/${{ env.ZIP_KSU }}
           token: ${{ secrets.GITHUB_TOKEN }}
-          name: KernelSU Release - ${{ env.KERNELSU_VERSION }}
+          name: ReSukiSU Release - ${{ env.KERNELSU_VERSION }}
           tag_name: ${{ github.run_id }}
           body: |
              **Info:**
